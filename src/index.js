@@ -34,7 +34,7 @@ const App = () => {
               typeof data !== "undefined" &&
               typeof data.userName !== "undefined"
             ) {
-              setUser({ isAuthenticated: true, userName: data.userName });
+              setUser({ isAuthenticated: true, userName: data.userName,userRole:data.userRole });
             }
           },
           (error) => {
@@ -68,7 +68,7 @@ const App = () => {
             element={<LogIn user={user} setUser={setUser} />}
           />
           <Route path="/logoff" element={<LogOff setUser={setUser} />} />
-          <Route path="/registration" element={<Registration/>} />
+          <Route path="/registration" element={<Registration user={user} setUser={setUser}/>} />
           <Route path="*" element={<h3>404</h3>} />
         </Route>
       </Routes>
