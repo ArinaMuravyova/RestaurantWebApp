@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import "./Style.css";
  
-const Order = ({user, orders, setOrders, removeOrder }) => {
-  useEffect(() => {
+const Order = () => {
+  /* useEffect(() => {
     const getOrders = async () => {
       const requestOptions = {
         method: "GET",
@@ -20,8 +20,8 @@ const Order = ({user, orders, setOrders, removeOrder }) => {
         );
     };
     getOrders();
-  }, [setOrders]);
-  const deleteItem = async ({ id }) => {
+  }, [setOrders]); */
+  /* const deleteItem = async ({ id }) => {
     const requestOptions = {
       method: "DELETE",
     };
@@ -53,6 +53,6 @@ const Order = ({user, orders, setOrders, removeOrder }) => {
         </div>
       ))}
     </React.Fragment>
-  )
+  ) */
 }
 export default Order
