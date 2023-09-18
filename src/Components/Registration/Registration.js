@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
  
-//const form=document.getElementById('form');
 
 const Registration = ({ user, setUser }) => {
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
   
-
+/* полученные данные с формы отправляются на сервер */
   const registration = async (event) => {
     event.preventDefault()
     var { email, password,passwordConfirmed } = document.forms[0]
@@ -18,7 +17,6 @@ const Registration = ({ user, setUser }) => {
       body: JSON.stringify({
         email: email.value,
         password: password.value,
-        //passwordConfirmed:passwordConfirmed.value,
       }),
     };
     return await fetch("api/account/register", requestOptions)

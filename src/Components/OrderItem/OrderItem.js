@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { FaTrash } from "react-icons/fa";
 import "./OrderItem.css";
+import {useSelector,useDispatch} from "react-redux";
+import {decreaseAmount, deleteFromOrder, increaseAmount} from "../../store/orderSlice";
+
 
 const OrderItem = (props) => {
-  const [order, setOrder] = useState(props.order);
+  const dispatch=useDispatch()
   return (
     <>
       <tr>
         <td>
-          <div>{props.order.name}</div>
+          <div>{props.order.Name}</div>
         </td>
-        <td>{props.order.cost}</td>
+        <td>{props.order.Cost}</td>
         <td className="align-middle">
           <div className="d-flex flex-row">
             <button
               className="btn btn-link px-2"
-              onClick={() => props.decreaseDishNum(order)}
+              onClick={() => dispatch(decreaseAmount({Dish:{...props.order}}))}
             >
               <i className="fas fa-minus"></i>
             </button>
@@ -24,7 +27,7 @@ const OrderItem = (props) => {
               id="form1"
               min="0"
               name="quantity"
-              value={props.order.amount}
+              value={props.order.Amount}
               type="number"
               className="form-control form-control-sm"
               style={{ width: "50px" }}
@@ -32,7 +35,7 @@ const OrderItem = (props) => {
 
             <button
               className="btn btn-link px-2"
-              onClick={() => props.onAdd(props.order)}
+              onClick={() => dispatch(increaseAmount({Dish:{...props.order}}))}
             >
               <i className="fas fa-plus"></i>
             </button>
@@ -41,7 +44,7 @@ const OrderItem = (props) => {
         <td>
           <FaTrash
             className="delete-icon"
-            onClick={() => props.onDelete(props.order.id)}
+            onClick={() => dispatch(deleteFromOrder({Dish:{...props.order}}))}
           ></FaTrash>
         </td>
       </tr>

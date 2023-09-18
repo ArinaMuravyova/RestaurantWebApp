@@ -1,31 +1,69 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-const orderSlice=createSlice({
-    name:'orders',
+const orderSlice= createSlice({
+    name:'order',
     initialState:{
-        orders:[],
-        
+        dishesInOrders:[],
+        orderSum:0,
+        shipping:250,
     },
     reducers:{
-    addToOrder(state,action){
-        let isInArray=false
-        let orderItem=state.payload.dish
-        state.orders.forEach(el=>{
-        if(el.id===action.payload.dish.id){
-          isInArray=true;
-          state.orders[el.id].amount++;
-          console.log(state.orders);
+        addToOrder(state,action){
+            let isAnArray=state.dishesInOrders.map(item=>item.Id).includes(action.payload.Dish.Id)
+            if(isAnArray){
+                for (let i = 0; i < state.dishesInOrders.length; i++) {
+                    if(state.dishesInOrders[i].Id===action.payload.Dish.Id){
+                        state.dishesInOrders[i].Amount++
+                    }
+                }
+            }else{
+                state.dishesInOrders.push({
+                    Id:action.payload.Dish.Id,
+                    Name:action.payload.Dish.Name,
+                    Cost:action.payload.Dish.Cost,
+                    Amount:1,
+                    Img:action.payload.Dish.Img})
+            }
+            state.orderSum+=action.payload.Dish.Cost
+            if(state.orderSum>1500)
+                state.shipping=0
+        },
+        deleteFromOrder(state,action){
+            let indexToDelete=state.dishesInOrders.map(item=>item.Id).indexOf(action.payload.Dish.Id)
+            state.dishesInOrders.splice(indexToDelete,1)
+
+            state.orderSum-=action.payload.Dish.Cost
+            if(state.orderSum<=1500)
+                state.shipping=250
+        },
+        decreaseAmount(state,action){
+            for (let i = 0; i < state.dishesInOrders.length; i++) {
+                if(state.dishesInOrders[i].Id===action.payload.Dish.Id){
+                    state.dishesInOrders[i].Amount--
+                }
+            }
+
+            state.orderSum-=action.payload.Dish.Cost
+            if(state.orderSum<=1500)
+                state.shipping=250
+        },
+        increaseAmount(state,action){
+            for (let i = 0; i < state.dishesInOrders.length; i++) {
+                if(state.dishesInOrders[i].Id===action.payload.Dish.Id){
+                    state.dishesInOrders[i].Amount++
+                }
+            }
+            state.orderSum+=action.payload.Dish.Cost
+            if(state.orderSum>1500)
+                state.shipping=0
         }
-    });
-      if(!isInArray){
-       state.orders.push(action.payload.dish)
-       state.orders[action.payload.dish.id].amount++
-       console.log(state.orders)
-      }
-    },
-    deleteOrder(state,action){}
     }
 })
 
-export const {addToOrder,deleteOrder}=orderSlice.actions
-export default orderSlice.reducer
+export default orderSlice.reducer;
+export const{
+    addToOrder,
+    deleteFromOrder,
+    decreaseAmount,
+    increaseAmount,
+}=orderSlice.actions

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const LogIn = ({ user, setUser }) => {
   const [errorMessages, setErrorMessages] = useState([]);
   const navigate = useNavigate();
-
+/* отправка данных с формы о пользователе,кто хочет войти в систему */
   const logIn = async (event) => {
     event.preventDefault()
     var { email, password } = document.forms[0]
@@ -58,7 +58,7 @@ const LogIn = ({ user, setUser }) => {
   return (
     <>
       {user.userName ? (
-        <h3>Пользователь {user.userName} вошел в системе</h3>
+        <h3>Пользователь {user.userName} вошел в систему</h3>
       ) : (
         <>
         

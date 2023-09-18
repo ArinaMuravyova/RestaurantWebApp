@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store";
-
+import {store} from "./store/index";
 import Layout from "./Components/Layout/Layout";
 import LogIn from "./Components/LogIn/LogIn";
 import LogOff from "./Components/LogOff/LogOff";
 import Registration from "./Components/Registration/Registration";
-
 import MainPage from "./Components/MainPage/MainPage";
 import Dishes from "./Components/Dishes/Dishes";
 import MakeOrder from "./Components/MakeOrder/MakeOrder";
+import ModalBasket from "./Components/Modal/ModalBasket";
 
 const App = () => {
   const [dishes, setDishes] = useState([]);
@@ -20,7 +19,7 @@ const App = () => {
   const [currentItems, setCurrentItems] = useState(dishes); //для фильтрованных блюд(для фильтрации)
   const [errorMessages, setErrorMessages] = useState([]);
 
-  
+  /* смена состояния доступа блюда-IsAble и отпрвка данных о изменении на сервер */
   const switchAccessDishState = (dish) => {
     dishes.forEach((el) => {
       if (el.id === dish.id) {
@@ -54,6 +53,7 @@ const App = () => {
       }
     });
   };
+  /* уменьшение кол-ва порций блюда на 1 из списка выбранных блюд */
   const deleteDishNumber = (dish) => {
     orders.forEach((el) => {
       if (dish.id === el.id && el.amount > 1) {
@@ -61,6 +61,7 @@ const App = () => {
       }
     });
   };
+  /* отображение блюд по выбранной категории */
   const chooseCategory = (categoryId) => {
     if (categoryId === 6) {
       setCurrentItems(dishes);
@@ -69,29 +70,26 @@ const App = () => {
     if (categoryId !== 1)
       setCurrentItems(dishes.filter((el) => el.categoryId === categoryId));
   };
+  /* удаление блюда из списка выбранных блюд */
   const deleteOrder = (orderId) => {
     setOrders(orders.filter((el) => el.id != orderId));
   };
+  /* добавление блюда к списку выбранных блюд */
   const addToOrder = (item) => {
-    let isInArray = false;
+    /* let isInArray = false;
     setOrderItem((orderItem = item));
     orders.forEach((el) => {
       if (el.id === item.id) {
         isInArray = true;
-        //setOrderItem(orderItem.amount++)
         el.amount++;
         setOrders([...orders]);
-
-        //console.log(orders)
       }
     });
     if (!isInArray) {
       item.amount = 1;
       setOrders([...orders, item]);
-      //setOrderItem(orderItem.amount=1)
-      //item.amount=1
       console.log(orders);
-    }
+    } */
   };
 
   const [user, setUser] = useState({
@@ -151,7 +149,7 @@ const App = () => {
                 dishes={currentItems}
                 setCurrentItems={setCurrentItems}
                 setDishes={setDishes}
-                onAdd={addToOrder}
+                /* onAdd={addToOrder} */
                 chooseCategory={chooseCategory}
                 switchAccessDishState={switchAccessDishState}
               />
@@ -179,6 +177,10 @@ const App = () => {
               />
             }
           />
+          <Route
+              path="/modalBasket"
+              element={<ModalBasket/>}
+          />
           <Route path="*" element={<h3>404</h3>} />
         </Route>
       </Routes>
@@ -188,8 +190,9 @@ const App = () => {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-
-  <App />
+ <Provider store={store}>
+   <App />
+ </Provider> 
 
   // </React.StrictMode>
 );

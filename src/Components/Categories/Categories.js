@@ -6,6 +6,7 @@ const Categories=(props)=>{
   let [categories,setCategories]=useState([])
 
   useEffect(() => {
+    /* получение данных от сервера о всех категориях */
     const getCategories = async () => {
       const requestOptions = {
         method: "GET",
@@ -29,8 +30,10 @@ const Categories=(props)=>{
   return(
      <div className="categories">
        {
-        categories.map(el=>(
-            <div onClick={()=>props.chooseCategory(el.id)} key={el.id}>{el.name}</div>
+        categories.filter(el=>el.id>1).map(el=>(
+          
+          <div onClick={()=>props.chooseCategory(el.id)} key={el.id}>{el.name}</div>
+          
         ))
        }
      </div>
